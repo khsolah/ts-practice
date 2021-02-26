@@ -35,6 +35,7 @@ export class LinkedList<T> implements ILinkedList<T> {
 
     while (currentNode) {
       if (i + 1 === index) {
+        // currentNode => node => currentNode.next
         node.next = currentNode.next
         node.prev = currentNode
 
@@ -43,6 +44,7 @@ export class LinkedList<T> implements ILinkedList<T> {
         }
 
         currentNode.next = node
+        this.length++
         return true
       }
 
@@ -54,6 +56,29 @@ export class LinkedList<T> implements ILinkedList<T> {
   }
 
   removeAt(index: number): Node<T> | null {
+    if (index > this.length) return null
+
+    let currentNode: Node<T> | null = this.head
+    let i: number = 0
+
+    while (i < index && currentNode) {
+      i++
+      currentNode = currentNode.next
+    }
+
+    // currentNode.prev => currentNode (delete target) => currentNode.next
+    if (currentNode) {
+      if (currentNode.prev) {
+        currentNode.prev.next = currentNode.next
+      }
+
+      if (currentNode.next) {
+        currentNode.next.prev = currentNode.prev
+      }
+
+      return currentNode
+    }
+
     return null
   }
 
