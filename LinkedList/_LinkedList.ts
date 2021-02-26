@@ -36,6 +36,15 @@ export class LinkedList<T> implements ILinkedList<T> {
   }
 
   toString(): string {
-    return ''
+    let currentNode: Node<T> | null = this.head
+    let path: string = String(this.head.value)
+    currentNode = currentNode.next
+
+    while (currentNode) {
+      path += `${String(currentNode.value)}`
+      currentNode = currentNode.next
+    }
+
+    return path
   }
 }
