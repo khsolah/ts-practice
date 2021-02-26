@@ -7,8 +7,8 @@ export interface INode<T> {
 export interface ILinkedList<T> {
   head: Node<T>
   length: number
-  insertAt(node: Node<T>, value: number): boolean
-  removeAt(value: number): Node<T> | null
+  insertAt(node: Node<T>, index: number): boolean
+  removeAt(index: number): Node<T> | null
   toString(): string
 }
 
@@ -27,8 +27,30 @@ export class LinkedList<T> implements ILinkedList<T> {
     this.head = new Node<T>(value)
   }
 
-  insertAt(node: Node<T>, value: number): boolean {
-    return true
+  insertAt(node: Node<T>, index = this.length): boolean {
+    if (index > this.length) return false
+
+    let i: number = 0
+    let currentNode: Node<T> | null = this.head
+
+    while (currentNode) {
+      if (i + 1 === index) {
+        node.next = currentNode.next
+        node.prev = currentNode
+
+        if (currentNode.next) {
+          currentNode.next.prev = node
+        }
+
+        currentNode.next = node
+        return true
+      }
+
+      currentNode = currentNode.next
+      i++
+    }
+
+    return false
   }
 
   removeAt(index: number): Node<T> | null {
@@ -41,7 +63,7 @@ export class LinkedList<T> implements ILinkedList<T> {
     currentNode = currentNode.next
 
     while (currentNode) {
-      path += `${String(currentNode.value)}`
+      path += ` => ${String(currentNode.value)}`
       currentNode = currentNode.next
     }
 
